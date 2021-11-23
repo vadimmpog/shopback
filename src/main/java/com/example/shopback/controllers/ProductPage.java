@@ -1,0 +1,77 @@
+package com.example.shopback.controllers;
+import com.example.shopback.models.Product;
+import com.example.shopback.services.ShopService;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.Optional;
+
+
+@RestController
+@RequestMapping(path = "/products")
+public class ProductPage {
+
+    @Autowired
+    private ShopService shopService;
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public List<Product> allProducts() {
+        return shopService.getAllProducts();
+    }
+
+    @RequestMapping(value = "/find", method = RequestMethod.GET,
+            params = {"id", "name"})
+    public Optional<Product> findProduct(
+            @RequestParam(value = "id") Integer id) {
+        return shopService.findProductById(id);
+    }
+
+    @RequestMapping(value = "/find", method = RequestMethod.GET,
+            params = {"name"})
+    public Optional<Product> findProduct(
+            @RequestParam(value = "name") String name) {
+        return shopService.findProductByName(name);
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public void addProduct(@RequestBody Product product){
+        shopService.createProduct(product);
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.DELETE,
+            params = {"id"})
+    public void deleteProductById(
+            @RequestParam(value = "id") Integer id){
+        shopService.deleteProductById(id);
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public void updateProduct(@RequestBody Product product){
+        shopService.updateProduct(product);
+    }
+
+    @RequestMapping(value = "/updateDesc", method = RequestMethod.POST)
+    public void updateProductDescription(@RequestBody String data){
+        JSONObject dataJson = new JSONObject(data);
+        String description = dataJson.getString("description");
+        Integer id = dataJson.getInt("id");
+        shopService.updateProductDescriptionById(id, description);
+    }
+
+    @RequestMapping(value = "/updatePrice", method = RequestMethod.POST)
+    public void updateProductPrice(@RequestBody String data){
+        JSONObject dataJson = new JSONObject(data);
+        Float price = dataJson.getFloat("price");
+        Integer id = dataJson.getInt("id");
+        shopService.updateProductPriceById(id, price);
+    }
+
+    @RequestMapping(value = "/updateQuantity", method = RequestMethod.POST)
+    public void updateProductQuantity(@RequestBody String data){
+        JSONObject dataJson = new JSONObject(data);
+        Integer quantity = dataJson.getInt("quantity");
+        Integer id = dataJson.getInt("id");
+        shopService.updateProductQuantityById(id, quantity);
+    }
+}
