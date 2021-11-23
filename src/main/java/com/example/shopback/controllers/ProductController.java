@@ -1,19 +1,18 @@
 package com.example.shopback.controllers;
 import com.example.shopback.models.Product;
 import com.example.shopback.services.ShopService;
+import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/products")
-public class ProductPage {
+public class ProductController {
 
-    @Autowired
-    private ShopService shopService;
+    private final ShopService shopService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public List<Product> allProducts() {
@@ -21,7 +20,7 @@ public class ProductPage {
     }
 
     @RequestMapping(value = "/find", method = RequestMethod.GET,
-            params = {"id", "name"})
+            params = {"id"})
     public Optional<Product> findProduct(
             @RequestParam(value = "id") Integer id) {
         return shopService.findProductById(id);
@@ -39,7 +38,7 @@ public class ProductPage {
         shopService.createProduct(product);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.DELETE,
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE,
             params = {"id"})
     public void deleteProductById(
             @RequestParam(value = "id") Integer id){

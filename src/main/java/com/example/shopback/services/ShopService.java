@@ -3,17 +3,20 @@ package com.example.shopback.services;
 import com.example.shopback.MessageResponse;
 import com.example.shopback.models.Product;
 import com.example.shopback.repos.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class ShopService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
+
+//    @Autowired
+//    private CartRepository cartRepository;
 
     public MessageResponse createProduct(Product product){
         Product p = productRepository.save(product);
