@@ -73,4 +73,12 @@ public class ProductController {
         Integer id = dataJson.getInt("id");
         shopService.updateProductQuantityById(id, quantity);
     }
+
+    @RequestMapping(value = "/setQuantity", method = RequestMethod.POST)
+    public void setProductQuantity(@RequestBody String data){
+        JSONObject dataJson = new JSONObject(data);
+        Integer quantity = dataJson.getInt("quantity");
+        Integer id = dataJson.getInt("id");
+        shopService.setProductQuantityById(id, quantity);
+    }
 }

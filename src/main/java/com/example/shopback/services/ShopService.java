@@ -1,6 +1,6 @@
 package com.example.shopback.services;
 
-import com.example.shopback.MessageResponse;
+import com.example.shopback.support.MessageResponse;
 import com.example.shopback.models.Product;
 import com.example.shopback.repos.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +14,6 @@ import java.util.Optional;
 public class ShopService {
 
     private final ProductRepository productRepository;
-
-//    @Autowired
-//    private CartRepository cartRepository;
 
     public MessageResponse createProduct(Product product){
         Product p = productRepository.save(product);
@@ -42,6 +39,9 @@ public class ShopService {
 
     public void updateProductQuantityById(Integer id, Integer quantity){
         productRepository.updateQuantity(id, quantity);
+    }
+    public void setProductQuantityById(Integer id, Integer quantity){
+        productRepository.setQuantity(id, quantity);
     }
 
     public Optional<Product> findProductById(Integer id){

@@ -4,26 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.sql.Time;
-import java.util.Date;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "orders")
-public class Order {
+@Table(name = "order_item")
+public class OrderItem {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
-    private Float sum;
-    @CreationTimestamp
-    private Date orderDate;
-    @CreationTimestamp
-    private Time orderTime;
-    private Integer userId;
+    private Integer quantity;
+    private Integer productId;
+    private Integer orderId;
 }

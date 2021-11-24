@@ -1,4 +1,4 @@
-package com.example.shopback;
+package com.example.shopback.support;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

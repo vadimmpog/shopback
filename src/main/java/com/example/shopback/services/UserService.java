@@ -1,6 +1,6 @@
 package com.example.shopback.services;
 
-import com.example.shopback.MessageResponse;
+import com.example.shopback.support.MessageResponse;
 import com.example.shopback.models.User;
 import com.example.shopback.repos.UsersRepository;
 import lombok.RequiredArgsConstructor;
