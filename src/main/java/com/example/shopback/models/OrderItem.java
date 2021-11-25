@@ -20,4 +20,6 @@ public class OrderItem {
     private Integer quantity;
     private Integer productId;
     private Integer orderId;
+
+
 }

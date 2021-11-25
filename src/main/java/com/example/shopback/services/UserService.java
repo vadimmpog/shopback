@@ -32,8 +32,18 @@ public class UserService {
     }
 
     public MessageResponse updateUser(User user){
-        User p = userRepository.save(user);
-        return new MessageResponse("User successfully updated", p.getId());
+        Integer id = user.getId();
+        if(id != null && id != 0){
+            String password = user.getPassword();
+            if(password != null && !user.passwordIsEmpty()) {
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
+            User oldUser = userRepository.getById(id);
+            user.update(oldUser);
+            User u = userRepository.save(user);
+            return new MessageResponse("User successfully updated", u.getId());
+        }
+        return new MessageResponse("User not found", 0);
     }
 
     public Optional<User> findUserById(Integer id){
@@ -46,7 +56,7 @@ public class UserService {
             if(passwordEncoder.matches(password, user.get().getPassword()))
                 return user;
         }
-        return null;
+        return Optional.empty();
     }
 
     public List<User> getAllUsers(){

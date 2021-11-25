@@ -25,8 +25,15 @@ public class ShopService {
     }
 
     public MessageResponse updateProduct(Product product){
-        Product p = productRepository.save(product);
-        return new MessageResponse("Product successfully updated", p.getId());
+        Integer id = product.getId();
+        if(id != null && id != 0){
+            Product oldProduct = productRepository.getById(id);
+            product.update(oldProduct);
+            Product p = productRepository.save(product);
+            System.out.println(p.getName());
+            return new MessageResponse("Product successfully updated", p.getId());
+        }
+        return new MessageResponse("Product not found", 0);
     }
 
     public void updateProductDescriptionById(Integer id, String description){

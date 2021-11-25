@@ -25,4 +25,15 @@ public class User {
     private String password;
     private Integer age;
     private String gender;
+
+    public void update(User u){
+        if (this.login == null || this.login.equals("")) this.setLogin(u.getLogin());
+        if (this.name == null || this.name.equals("")) this.setName(u.getName());
+        if (this.password == null || this.password.equals("")) this.setPassword(u.getPassword());
+        if (this.age == null || this.age == 0) this.setAge(u.getAge());
+        if (this.gender == null || this.gender.equals("")) this.setGender(u.getGender());
+    }
+    public boolean passwordIsEmpty(){
+        return this.password.equals("");
+    }
 }

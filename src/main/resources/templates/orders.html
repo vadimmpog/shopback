@@ -9,7 +9,7 @@
     <tr><th>id</th><th>Сумма заказа</th><th>Дата</th><th>Время</th><th>id пользователя</th></tr>
     <tr><td><input id="id"></td><td><input id="sum"></td><td><input id="date"></td><td><input id="time"></td><td><input id="userId"></td></tr>
 </table>
-<button onclick="create()">Создать</button><button onclick="update()">Обновить</button>
+<button onclick="create()">Создать</button><button onclick="update()">*Обновить*</button>
 <br>
 <br>
 <br>
@@ -26,11 +26,10 @@
     // function update(){
     //     var form = {
     //         'id': document.getElementById("id").value,
-    //         'name': document.getElementById("name").value,
-    //         'gender': document.getElementById("gender").value,
-    //         'login': document.getElementById("login").value,
-    //         'age': document.getElementById("age").value,
-    //         'password': document.getElementById("password").value
+    //         'sum': document.getElementById("sum").value,
+    //         'date': document.getElementById("date").value,
+    //         'time': document.getElementById("time").value,
+    //         'userId': document.getElementById("userId").value
     //     };
     //     Object.keys(form).forEach(function (key){
     //         console.log(form[key]);
@@ -46,7 +45,7 @@
     //         alert("Пользователь успешно создан.");
     //     }
     //     else {
-    //         alert("Ощибка "+response.status)
+    //         alert("Ошибка "+response.status)
     //     }
     //     clear();
     //     location.reload();
@@ -72,7 +71,7 @@
             alert("Пользователь успешно создан.");
         }
         else {
-            alert("Ощибка "+response.status)
+            alert("Ошибка "+response.status)
         }
         clear();
         window.location.reload();

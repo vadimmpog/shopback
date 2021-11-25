@@ -23,34 +23,34 @@
         document.getElementById("password").value="";
     }
 
-    // function update(){
-    //     var form = {
-    //         'id': document.getElementById("id").value,
-    //         'name': document.getElementById("name").value,
-    //         'gender': document.getElementById("gender").value,
-    //         'login': document.getElementById("login").value,
-    //         'age': document.getElementById("age").value,
-    //         'password': document.getElementById("password").value
-    //     };
-    //     Object.keys(form).forEach(function (key){
-    //         console.log(form[key]);
-    //     });
-    //     let response = fetch(document.URL+"/update", {
-    //         method: "Post",
-    //         headers: {
-    //             'Content-Type': 'application/json;charset=utf-8'
-    //         },
-    //         body: JSON.stringify(form)
-    //     });
-    //     if(response.ok){
-    //         alert("Пользователь успешно создан.");
-    //     }
-    //     else {
-    //         alert("Ощибка "+response.status)
-    //     }
-    //     clear();
-    //     location.reload();
-    // }
+    function update(){
+        var form = {
+            'id': document.getElementById("id").value,
+            'name': document.getElementById("name").value,
+            'gender': document.getElementById("gender").value,
+            'login': document.getElementById("login").value,
+            'age': document.getElementById("age").value,
+            'password': document.getElementById("password").value
+        };
+        Object.keys(form).forEach(function (key){
+            console.log(form[key]);
+        });
+        let response = fetch(document.URL+"/update", {
+            method: "Post",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(form)
+        });
+        if(response.ok){
+            alert("Пользователь успешно создан.");
+        }
+        else {
+            alert("Ошибка "+response.status)
+        }
+        clear();
+        location.reload();
+    }
 
     function create(){
         var form = {
@@ -73,7 +73,7 @@
             alert("Пользователь успешно создан.");
         }
         else {
-            alert("Ощибка "+response.status)
+            alert("Ошибка "+response.status)
         }
         clear();
         window.location.reload();

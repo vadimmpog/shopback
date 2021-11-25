@@ -26,4 +26,11 @@ public class Order {
     @CreationTimestamp
     private Time orderTime;
     private Integer userId;
+
+//    public void update(Order o){
+//        if (this.sum == null || this.sum == 0) this.setSum(o.getSum());
+//        if (this.orderDate == null) this.setOrderDate(o.getOrderDate());
+//        if (this.orderTime == null) this.setOrderTime(o.getOrderTime());
+//        if (this.userId == null || this.userId == 0) this.setUserId(o.getUserId());
+//    }
 }
