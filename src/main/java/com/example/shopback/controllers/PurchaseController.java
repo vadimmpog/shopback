@@ -12,12 +12,12 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "/order")
+@RequestMapping(path = "/orders")
 public class PurchaseController {
 
     private final PurchaseService purchaseService;
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<Order> getOrders() {
         return purchaseService.getAll();
     }
@@ -44,4 +44,6 @@ public class PurchaseController {
     public Tuple<List<OrderItem>,Float> getOrderList(@RequestParam(value = "orderId") Integer order_id) {
         return purchaseService.getOrderList(order_id);
     }
+
+    // найти заказы пользователя по id
 }

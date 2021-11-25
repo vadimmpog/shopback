@@ -37,10 +37,13 @@ public class PurchaseService {
     public Integer formOrder(Integer userId, List<OrderItem> productList){
         boolean notEnough = false;
         for(OrderItem orderItem : productList){
-            Integer quantity = productRepository.getQuantity(orderItem.getProductId());
-            if (quantity< orderItem.getQuantity()){
-                notEnough = true;
-                break;
+            Integer productId = orderItem.getProductId();
+            if(productId != null) {
+                Integer quantity = productRepository.getQuantity(productId);
+                if (quantity < orderItem.getQuantity()) {
+                    notEnough = true;
+                    break;
+                }
             }
         }
         Integer orderId = 0;

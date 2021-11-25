@@ -14,7 +14,7 @@ public class ProductController {
 
     private final ShopService shopService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<Product> allProducts() {
         return shopService.getAllProducts();
     }
@@ -33,7 +33,7 @@ public class ProductController {
         return shopService.findProductByName(name);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     public void addProduct(@RequestBody Product product){
         shopService.createProduct(product);
     }

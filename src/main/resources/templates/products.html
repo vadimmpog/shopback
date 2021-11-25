@@ -1,0 +1,138 @@
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Shop</title>
+</head>
+<body>
+<h1>Таблица товаров</h1>
+<table>
+    <tr><th>id</th><th>Название товара</th><th>Описание</th><th>Количество</th><th>Цена</th></tr>
+    <tr><td><input id="id"></td><td><input id="name"></td><td><input id="description"></td><td><input id="quantity"></td><td><input id="price"></td></tr>
+</table>
+<button onclick="create()">Создать</button><button onclick="update()">Обновить</button>
+<br>
+<br>
+<br>
+<div id="table"></div>
+<script>
+    function clear(){
+        document.getElementById("id").value="";
+        document.getElementById("name").value="";
+        document.getElementById("description").value="";
+        document.getElementById("quantity").value="";
+        document.getElementById("price").value="";
+    }
+
+    // function update(){
+    //     var form = {
+    //         'id': document.getElementById("id").value,
+    //         'name': document.getElementById("name").value,
+    //         'gender': document.getElementById("gender").value,
+    //         'login': document.getElementById("login").value,
+    //         'age': document.getElementById("age").value,
+    //         'password': document.getElementById("password").value
+    //     };
+    //     Object.keys(form).forEach(function (key){
+    //         console.log(form[key]);
+    //     });
+    //     let response = fetch(document.URL+"/update", {
+    //         method: "Post",
+    //         headers: {
+    //             'Content-Type': 'application/json;charset=utf-8'
+    //         },
+    //         body: JSON.stringify(form)
+    //     });
+    //     if(response.ok){
+    //         alert("Пользователь успешно создан.");
+    //     }
+    //     else {
+    //         alert("Ощибка "+response.status)
+    //     }
+    //     clear();
+    //     location.reload();
+    // }
+
+    function create(){
+        var form = {
+            'id': document.getElementById("id").value,
+            'name': document.getElementById("name").value,
+            'description': document.getElementById("description").value,
+            'quantity': document.getElementById("quantity").value,
+            'price': document.getElementById("price").value
+        };
+
+        let response = fetch(document.URL+"/create", {
+            method: "Post",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(form)
+        });
+        if(response.ok){
+            alert("Пользователь успешно создан.");
+        }
+        else {
+            alert("Ощибка "+response.status)
+        }
+        clear();
+        window.location.reload();
+    }
+
+    function deleteProduct(id){
+        let url=document.URL;
+        let response = fetch(url+'/delete?id='+id, {
+            method: "Delete"
+        });
+        window.location.reload();
+    }
+
+    function createTable(response){
+        const space = document.getElementById("table");
+        tbl = document.createElement('table');
+        tbl.style.width = '100px';
+        const tr = tbl.insertRow();
+        ["id", "Название товара", "Описание", "Количество", "Цена"].forEach(
+            text => {
+                const td = tr.insertCell();
+                td.appendChild(document.createTextNode(text));
+                td.style.border = '1px solid black';
+            })
+        let i = 0;
+        for(user of response){
+            const tr = tbl.insertRow();
+            Object.keys(user).forEach(key => {
+                const td = tr.insertCell();
+                td.appendChild(document.createTextNode(user[key]));
+                td.style.border = '1px solid black';
+            })
+            const td = tr.insertCell();
+            let button =  document.createElement("button");
+            button.id=user.id;
+            button.textContent="Удалить";
+            button.onclick= function () {
+                deleteProduct(this.id);
+            };
+            td.appendChild(button);
+            i+=1;
+        }
+        space.appendChild(tbl);
+    }
+
+    async function load(){
+        let response = await fetch(document.URL+"/all")
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error("not ok");
+                }
+                return response.json()
+            });
+        createTable(response);
+    }
+
+    load();
+</script>
+<br>
+<a href="/">Назад</a>
+</body>
+</html>
+

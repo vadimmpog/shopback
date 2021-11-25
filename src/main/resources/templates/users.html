@@ -1,0 +1,138 @@
+<html lang="ru">
+<head>
+    <title>Shop</title>
+</head>
+<body>
+<h1>Таблица пользователей</h1>
+<table>
+    <tr><th>id</th><th>Имя пользователя</th><th>Возраст</th><th>Пол</th><th>Логин</th><th>Пароль</th></tr>
+    <tr><td><input id="id"></td><td><input id="name"></td><td><input id="age"></td><td><input id="gender"></td><td><input id="login"></td><td><input id="password"></td></tr>
+</table>
+<button onclick="create()">Создать</button><button onclick="update()">Обновить</button>
+<br>
+<br>
+<br>
+<div id="table"></div>
+<script>
+    function clear(){
+        document.getElementById("id").value = "";
+        document.getElementById("name").value="";
+        document.getElementById("gender").value="";
+        document.getElementById("login").value="";
+        document.getElementById("age").value="";
+        document.getElementById("password").value="";
+    }
+
+    // function update(){
+    //     var form = {
+    //         'id': document.getElementById("id").value,
+    //         'name': document.getElementById("name").value,
+    //         'gender': document.getElementById("gender").value,
+    //         'login': document.getElementById("login").value,
+    //         'age': document.getElementById("age").value,
+    //         'password': document.getElementById("password").value
+    //     };
+    //     Object.keys(form).forEach(function (key){
+    //         console.log(form[key]);
+    //     });
+    //     let response = fetch(document.URL+"/update", {
+    //         method: "Post",
+    //         headers: {
+    //             'Content-Type': 'application/json;charset=utf-8'
+    //         },
+    //         body: JSON.stringify(form)
+    //     });
+    //     if(response.ok){
+    //         alert("Пользователь успешно создан.");
+    //     }
+    //     else {
+    //         alert("Ощибка "+response.status)
+    //     }
+    //     clear();
+    //     location.reload();
+    // }
+
+    function create(){
+        var form = {
+            'id': document.getElementById("id").value,
+            'name': document.getElementById("name").value,
+            'gender': document.getElementById("gender").value,
+            'login': document.getElementById("login").value,
+            'age': document.getElementById("age").value,
+            'password': document.getElementById("password").value
+        };
+
+        let response = fetch(document.URL+"/create", {
+            method: "Post",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(form)
+        });
+        if(response.ok){
+            alert("Пользователь успешно создан.");
+        }
+        else {
+            alert("Ощибка "+response.status)
+        }
+        clear();
+        window.location.reload();
+    }
+
+    function deleteUser(id){
+        let url=document.URL;
+        let response = fetch(url+'/delete?id='+id, {
+            method: "Delete"
+        });
+        window.location.reload();
+    }
+
+    function createTable(response){
+        const space = document.getElementById("table");
+        tbl = document.createElement('table');
+        tbl.style.width = '100px';
+        const tr = tbl.insertRow();
+        ["id", "Логин", "Имя пользователя", "Пароль", "Возраст", "Пол"].forEach(
+            text => {
+                const td = tr.insertCell();
+                td.appendChild(document.createTextNode(text));
+                td.style.border = '1px solid black';
+            })
+        let i = 0;
+        for(user of response){
+            const tr = tbl.insertRow();
+            Object.keys(user).forEach(key => {
+                const td = tr.insertCell();
+                td.appendChild(document.createTextNode(user[key]));
+                td.style.border = '1px solid black';
+            })
+            const td = tr.insertCell();
+            let button =  document.createElement("button");
+            button.id=user.id;
+            button.textContent="Удалить";
+            button.onclick= function () {
+                deleteUser(this.id);
+            };
+            td.appendChild(button);
+            i+=1;
+        }
+        space.appendChild(tbl);
+    }
+
+    async function load(){
+        let response = await fetch(document.URL+"/all")
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error("not ok");
+                }
+                return response.json()
+            });
+        createTable(response);
+    }
+
+    load();
+</script>
+<br>
+<a href="/">Назад</a>
+</body>
+</html>

@@ -16,12 +16,12 @@ public class UserController {
 
     private final UserService userService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<User> allUsers() {
         return userService.getAllUsers();
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     public void addUser(@RequestBody User user){
         userService.createUser(user);
     }

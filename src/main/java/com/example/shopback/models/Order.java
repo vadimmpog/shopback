@@ -8,7 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Time;
-import java.util.Date;
+import java.sql.Date;
 
 @Getter
 @Setter

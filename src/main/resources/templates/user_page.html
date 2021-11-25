@@ -1,0 +1,61 @@
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Shop</title>
+</head>
+<body>
+<h1>Таблица товаров</h1>
+<br>
+<br>
+<div id="table"></div>
+<script>
+    function createTable(response){
+        const space = document.getElementById("table");
+        tbl = document.createElement('table');
+        tbl.style.width = '100px';
+        const tr = tbl.insertRow();
+        ["id", "Название товара", "Описание", "Количество", "Цена"].forEach(
+            text => {
+                const td = tr.insertCell();
+                td.appendChild(document.createTextNode(text));
+                td.style.border = '1px solid black';
+            })
+        let i = 0;
+        for(user of response){
+            const tr = tbl.insertRow();
+            Object.keys(user).forEach(key => {
+                const td = tr.insertCell();
+                td.appendChild(document.createTextNode(user[key]));
+                td.style.border = '1px solid black';
+            })
+            const td = tr.insertCell();
+            let button =  document.createElement("button");
+            button.id=user.id;
+            button.textContent="Удалить";
+            button.onclick= function () {
+                deleteProduct(this.id);
+            };
+            td.appendChild(button);
+            i+=1;
+        }
+        space.appendChild(tbl);
+    }
+
+    async function load(){
+        let response = await fetch(document.URL+"/all")
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error("not ok");
+                }
+                return response.json()
+            });
+        createTable(response);
+    }
+
+    load();
+</script>
+<br>
+<a href="/">Назад</a>
+</body>
+</html>
+
