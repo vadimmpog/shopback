@@ -6,7 +6,7 @@
 <body>
 <h1>Таблица товаров</h1>
 <table>
-    <tr><th>id</th><th>Название товара</th><th>Описание</th><th>Количество</th><th>Цена</th></tr>
+    <tr><th>id</th><th>Название товара</th><th>Описание</th><th>Количество</th><th>Цена р.</th></tr>
     <tr><td><input id="id"></td><td><input id="name"></td><td><input id="description"></td><td><input id="quantity"></td><td><input id="price"></td></tr>
 </table>
 <button onclick="create()">Создать</button><button onclick="update()">Обновить</button>
@@ -23,7 +23,7 @@
         document.getElementById("price").value="";
     }
 
-    function update(){
+    async function update(){
         var form = {
             'id': document.getElementById("id").value,
             'name': document.getElementById("name").value,
@@ -34,7 +34,7 @@
         Object.keys(form).forEach(function (key){
             console.log(form[key]);
         });
-        let response = fetch(document.URL+"/update", {
+        let response = await fetch(document.URL+"/update", {
             method: "Post",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -51,7 +51,7 @@
         location.reload();
     }
 
-    function create(){
+    async function create(){
         var form = {
             'id': document.getElementById("id").value,
             'name': document.getElementById("name").value,
@@ -60,7 +60,7 @@
             'price': document.getElementById("price").value
         };
 
-        let response = fetch(document.URL+"/create", {
+        let response = await fetch(document.URL+"/create", {
             method: "Post",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -68,7 +68,7 @@
             body: JSON.stringify(form)
         });
         if(response.ok){
-            alert("Пользователь успешно создан.");
+            alert("Продукт успешно создан.");
         }
         else {
             alert("Ошибка "+response.status)
@@ -77,12 +77,18 @@
         window.location.reload();
     }
 
-    function deleteProduct(id){
+    async function deleteProduct(id){
         let url=document.URL;
         let response = fetch(url+'/delete?id='+id, {
             method: "Delete"
         });
-        window.location.reload();
+        if(response.ok){
+            alert("Продукт удален создан.");
+        }
+        else {
+            alert("Ошибка "+ response.status)
+        }
+        location.reload();
     }
 
     function createTable(response){
@@ -121,7 +127,7 @@
         let response = await fetch(document.URL+"/all")
             .then(function(response) {
                 if (!response.ok) {
-                    throw new Error("not ok");
+                    alert("Невозможно загрузить продукты. Ошибка "+ response.status)
                 }
                 return response.json()
             });

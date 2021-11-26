@@ -6,10 +6,10 @@
 <body>
 <h1>Таблица заказов</h1>
 <table>
-    <tr><th>id</th><th>Сумма заказа</th><th>Дата</th><th>Время</th><th>id пользователя</th></tr>
+    <tr><th>id</th><th>Сумма заказа р.</th><th>Дата</th><th>Время</th><th>id пользователя</th></tr>
     <tr><td><input id="id"></td><td><input id="sum"></td><td><input id="date"></td><td><input id="time"></td><td><input id="userId"></td></tr>
 </table>
-<button onclick="create()">Создать</button><button onclick="update()">*Обновить*</button>
+<button onclick="update()">Обновить</button>
 <br>
 <br>
 <br>
@@ -23,35 +23,7 @@
         document.getElementById("userId").value="";
     }
 
-    // function update(){
-    //     var form = {
-    //         'id': document.getElementById("id").value,
-    //         'sum': document.getElementById("sum").value,
-    //         'date': document.getElementById("date").value,
-    //         'time': document.getElementById("time").value,
-    //         'userId': document.getElementById("userId").value
-    //     };
-    //     Object.keys(form).forEach(function (key){
-    //         console.log(form[key]);
-    //     });
-    //     let response = fetch(document.URL+"/update", {
-    //         method: "Post",
-    //         headers: {
-    //             'Content-Type': 'application/json;charset=utf-8'
-    //         },
-    //         body: JSON.stringify(form)
-    //     });
-    //     if(response.ok){
-    //         alert("Пользователь успешно создан.");
-    //     }
-    //     else {
-    //         alert("Ошибка "+response.status)
-    //     }
-    //     clear();
-    //     location.reload();
-    // }
-
-    function create(){
+    async function update(){
         var form = {
             'id': document.getElementById("id").value,
             'sum': document.getElementById("sum").value,
@@ -59,8 +31,10 @@
             'time': document.getElementById("time").value,
             'userId': document.getElementById("userId").value
         };
-
-        let response = fetch(document.URL+"/create", {
+        Object.keys(form).forEach(function (key){
+            console.log(form[key]);
+        });
+        let response = await fetch(document.URL+"/update", {
             method: "Post",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -68,21 +42,53 @@
             body: JSON.stringify(form)
         });
         if(response.ok){
-            alert("Пользователь успешно создан.");
+            alert("Заказ успешно обновлен.");
         }
         else {
             alert("Ошибка "+response.status)
         }
         clear();
-        window.location.reload();
+        location.reload();
     }
 
-    function deleteOrder(id){
+    // async function create(){
+    //     var form = {
+    //         'id': document.getElementById("id").value,
+    //         'sum': document.getElementById("sum").value,
+    //         'date': document.getElementById("date").value,
+    //         'time': document.getElementById("time").value,
+    //         'userId': document.getElementById("userId").value
+    //     };
+    //
+    //     let response = await fetch(document.URL+"/create", {
+    //         method: "Post",
+    //         headers: {
+    //             'Content-Type': 'application/json;charset=utf-8'
+    //         },
+    //         body: JSON.stringify(form)
+    //     });
+    //     if(response.ok){
+    //         alert("Заказ успешно создан.");
+    //     }
+    //     else {
+    //         alert("Ошибка "+response.status)
+    //     }
+    //     clear();
+    //     window.location.reload();
+    // }
+
+    async function deleteOrder(id){
         let url=document.URL;
-        let response = fetch(url+'/delete?id='+id, {
+        let response = await fetch(url+'/delete?id='+id, {
             method: "Delete"
         });
-        window.location.reload();
+        if(response.ok){
+            alert("Заказ успешно удален.");
+        }
+        else {
+            alert("Ошибка "+response.status)
+        }
+        location.reload();
     }
 
     function createTable(response){
@@ -121,7 +127,7 @@
         let response = await fetch(document.URL+"/all")
             .then(function(response) {
                 if (!response.ok) {
-                    throw new Error("not ok");
+                    alert("Невозможно загрузить заказы. Ошибка "+ response.status)
                 }
                 return response.json()
             });
