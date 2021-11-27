@@ -54,9 +54,11 @@
         for(const product of response){
             const tr = tbl.insertRow();
             Object.keys(product).forEach(key => {
-                const td = tr.insertCell();
-                td.appendChild(document.createTextNode(product[key]));
-                td.style.border = '1px solid black';
+                if(key !== "id") {
+                    const td = tr.insertCell();
+                    td.appendChild(document.createTextNode(product[key]));
+                    td.style.border = '1px solid black';
+                }
             })
             const td = tr.insertCell();
             let input = document.createElement("input");
