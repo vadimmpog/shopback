@@ -1,0 +1,86 @@
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Shop</title>
+</head>
+<body>
+<script>
+    function clear(){
+        ["name", "age", "gender", "login", "password", "repass"].forEach(text => {
+            document.getElementById(text).value = "";
+        })
+    }
+    async function register(){
+        let form = {
+            'name': document.getElementById("name").value,
+            'age': document.getElementById("age").value,
+            'gender': document.getElementById("gender").value,
+            'login': document.getElementById("login").value,
+            'password': document.getElementById("password").value
+        };
+        let canCreate = false;
+        Object.keys(form).forEach(key => {
+            if (form[key] !== "" && key !== "id"){
+                canCreate = true;
+            }
+        });
+        if (!canCreate) {
+            alert("Заполните все поля!")
+        }
+        else{
+            if(form.password !== document.getElementById("repass").value)
+                alert("Пароли не совпадают!")
+            else{
+                let response = await fetch("/users/register", {
+                    method: "Post",
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    body: JSON.stringify(form)
+                });
+                if(response.ok){
+                    alert("Регистрация прошла успешно.");
+                }
+                else {
+                    alert("Ошибка "+response.status)
+                }
+                clear();
+            }
+        }
+    }
+</script>
+<h1>Регистрация</h1>
+<p>Пожалуйста заполните форму:</p>
+    <label> Имя </label>
+    <input type="text" id="name" placeholder="Введите имя" size="15"/> <br> <br>
+    <label>
+        Возраст :
+    </label>
+    <input type="number" id="age" min="1" max="100">
+    <br>
+    <br>
+    <label>
+        Пол :
+    </label><br>
+        <select id="gender">
+            <option value="female">female</option>
+            <option value="male">male</option>
+        </select>
+<br>
+    <br>
+    Почта:
+    <input type="email" id="login" placeholder="Введите почту"/> <br>
+    <br> <br>
+    Пароль:
+    <input type="Password" id="password" placeholder="Введите пароль"> <br>
+    <br> <br>
+    Повторите пароль:
+    <input type="Password" id="repass" placeholder="Повторите пароль"> <br> <br>
+    <button onclick="register()">Зарегистрироваться</button>
+    </div>
+
+    <div class="container signin">
+        <p>Уже есть аккаунт?<a href="/login">Авторизация</a>.</p>
+    </div>
+</body>
+</html>

@@ -25,6 +25,8 @@ public class User {
     private String password;
     private Integer age;
     private String gender;
+    private String role;
+    private Boolean enabled = true;
 
     public void update(User u){
         if (this.login == null || this.login.equals("")) this.setLogin(u.getLogin());
@@ -32,6 +34,8 @@ public class User {
         if (this.password == null || this.password.equals("")) this.setPassword(u.getPassword());
         if (this.age == null || this.age == 0) this.setAge(u.getAge());
         if (this.gender == null || this.gender.equals("")) this.setGender(u.getGender());
+        if (this.role == null || this.role.equals("")) this.setRole(u.getRole());
+        if (this.enabled == null) this.setEnabled(u.getEnabled());
     }
     public boolean passwordIsEmpty(){
         return this.password.equals("");

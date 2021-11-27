@@ -14,19 +14,19 @@ public class ProductController {
 
     private final ShopService shopService;
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/all", method = RequestMethod.GET)
     public List<Product> allProducts() {
         return shopService.getAllProducts();
     }
 
-    @RequestMapping(value = "/find", method = RequestMethod.GET,
+    @RequestMapping(value = "/user/find", method = RequestMethod.GET,
             params = {"id"})
     public Optional<Product> findProduct(
             @RequestParam(value = "id") Integer id) {
         return shopService.findProductById(id);
     }
 
-    @RequestMapping(value = "/find", method = RequestMethod.GET,
+    @RequestMapping(value = "/user/find", method = RequestMethod.GET,
             params = {"name"})
     public Optional<Product> findProduct(
             @RequestParam(value = "name") String name) {

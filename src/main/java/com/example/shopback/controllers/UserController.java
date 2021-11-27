@@ -26,6 +26,12 @@ public class UserController {
         userService.createUser(user);
     }
 
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public void registerUser(@RequestBody User user){
+        user.setRole("USER");
+        userService.createUser(user);
+    }
+
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE,
             params = {"id"})
     public void deleteUserById(

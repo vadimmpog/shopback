@@ -3,6 +3,7 @@ package com.example.shopback.controllers;
 import com.example.shopback.models.Order;
 import com.example.shopback.models.OrderItem;
 import com.example.shopback.services.PurchaseService;
+import com.example.shopback.support.CartItem;
 import com.example.shopback.support.Tuple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +35,25 @@ public class PurchaseController {
         purchaseService.deleteFromOrder(id);
     }
 
-    @RequestMapping(value = "/formOrder", method = RequestMethod.POST)
-    public void formOrder(@RequestBody Tuple<Integer,List<OrderItem>> data) {
-        purchaseService.formOrder(data.x, data.y);
+    @RequestMapping(value = "/user/delete", method = RequestMethod.DELETE,
+            params = {"id"})
+    public void deleteCartItem(@RequestParam("id") Integer id) {
+        purchaseService.deleteCartItem(id);
+    }
+
+    @RequestMapping(value = "/user/addToCart", method = RequestMethod.POST)
+    public void addToCart(@RequestBody OrderItem item) {
+        purchaseService.addItem(item);
+    }
+
+    @RequestMapping(value = "/user/loadCart", method = RequestMethod.GET)
+    public List<CartItem> loadCartItems() {
+        return purchaseService.loadCart();
+    }
+
+    @RequestMapping(value = "/user/formOrder", method = RequestMethod.POST)
+    public Integer formOrder(@RequestBody List<OrderItem> data) {
+        return purchaseService.formOrder(data);
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET,

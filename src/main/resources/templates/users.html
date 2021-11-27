@@ -5,8 +5,8 @@
 <body>
 <h1>Таблица пользователей</h1>
 <table>
-    <tr><th>id</th><th>Имя пользователя</th><th>Возраст</th><th>Пол</th><th>Логин</th><th>Пароль</th></tr>
-    <tr><td><input id="id"></td><td><input id="name"></td><td><input id="age"></td><td><input id="gender"></td><td><input id="login"></td><td><input id="password"></td></tr>
+    <tr><th>id</th><th>Имя пользователя</th><th>Возраст</th><th>Пол</th><th>Логин</th><th>Пароль</th><th>Админ</th><th>Активен</th></tr>
+    <tr><td><input id="id"></td><td><input id="name"></td><td><input id="age"></td><td><input id="gender"></td><td><input id="login"></td><td><input id="password"></td><td><input id="role"></td><td><input id="enabled"></td></tr>
 </table>
 <button onclick="create()">Создать</button><button onclick="update()">Обновить</button>
 <br>
@@ -15,50 +15,57 @@
 <div id="table"></div>
 <script>
     function clear(){
-        document.getElementById("id").value = "";
-        document.getElementById("name").value="";
-        document.getElementById("gender").value="";
-        document.getElementById("login").value="";
-        document.getElementById("age").value="";
-        document.getElementById("password").value="";
+        ["id", "name", "gender", "login", "age", "password", "role", "enabled"].forEach(text => {
+            document.getElementById(text).value = "";
+        })
     }
 
     async function update(){
-        var form = {
+        let form = {
             'id': document.getElementById("id").value,
             'name': document.getElementById("name").value,
             'gender': document.getElementById("gender").value,
             'login': document.getElementById("login").value,
             'age': document.getElementById("age").value,
-            'password': document.getElementById("password").value
+            'password': document.getElementById("password").value,
+            'role': document.getElementById("role").value,
+            'enabled': document.getElementById("enabled").value
         };
-
-        let response = await fetch(document.URL+"/update", {
-            method: "Post",
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify(form)
+        let needUpdate = false;
+        Object.keys(form).forEach(key => {
+            if (form[key] !== "" && key !== "id"){
+                needUpdate = true;
+            }
         });
 
-        if(response.ok){
-            alert("Пользователь успешно создан.");
-        }
-        else {
-            alert("Ошибка "+ response.status)
-        }
-        clear();
-        location.reload();
+        if (needUpdate) {
+            let response = await fetch(document.URL + "/update", {
+                method: "Post",
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(form)
+            });
+            if (response.ok) {
+                alert("Пользователь успешно обновлен.");
+            } else {
+                alert("Пользователь не найден. Ошибка " + response.status);
+            }
+            clear();
+            location.reload();
+        } else alert("Заполните данные!");
     }
 
     async function create(){
-        var form = {
+        let form = {
             'id': document.getElementById("id").value,
             'name': document.getElementById("name").value,
             'gender': document.getElementById("gender").value,
             'login': document.getElementById("login").value,
             'age': document.getElementById("age").value,
-            'password': document.getElementById("password").value
+            'password': document.getElementById("password").value,
+            'role': document.getElementById("role").value,
+            'enabled': document.getElementById("enabled").value
         };
 
         let response = await fetch(document.URL+"/create", {
@@ -84,7 +91,7 @@
             method: "Delete"
         });
         if(response.ok){
-            alert("Пользователь удален создан.");
+            alert("Пользователь успешно удален.");
         }
         else {
             alert("Ошибка "+ response.status)
@@ -94,17 +101,17 @@
 
     function createTable(response){
         const space = document.getElementById("table");
-        tbl = document.createElement('table');
+        let tbl = document.createElement('table');
         tbl.style.width = '100px';
         const tr = tbl.insertRow();
-        ["id", "Логин", "Имя пользователя", "Пароль", "Возраст", "Пол"].forEach(
+        ["id", "Логин", "Имя пользователя", "Пароль", "Возраст", "Пол", "role", "enabled"].forEach(
             text => {
                 const td = tr.insertCell();
                 td.appendChild(document.createTextNode(text));
                 td.style.border = '1px solid black';
             })
         let i = 0;
-        for(user of response){
+        for(const user of response){
             const tr = tbl.insertRow();
             Object.keys(user).forEach(key => {
                 const td = tr.insertCell();
@@ -134,10 +141,9 @@
             });
         createTable(response);
     }
-
     load();
 </script>
 <br>
-<a href="/">Назад</a>
+<a href="/page">Назад</a>
 </body>
 </html>

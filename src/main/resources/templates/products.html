@@ -16,15 +16,13 @@
 <div id="table"></div>
 <script>
     function clear(){
-        document.getElementById("id").value="";
-        document.getElementById("name").value="";
-        document.getElementById("description").value="";
-        document.getElementById("quantity").value="";
-        document.getElementById("price").value="";
+        ["id", "name", "description", "quantity", "price"].forEach(text => {
+            document.getElementById(text).value = "";
+        })
     }
 
     async function update(){
-        var form = {
+        let form = {
             'id': document.getElementById("id").value,
             'name': document.getElementById("name").value,
             'description': document.getElementById("description").value,
@@ -52,7 +50,7 @@
     }
 
     async function create(){
-        var form = {
+        let form = {
             'id': document.getElementById("id").value,
             'name': document.getElementById("name").value,
             'description': document.getElementById("description").value,
@@ -78,12 +76,11 @@
     }
 
     async function deleteProduct(id){
-        let url=document.URL;
-        let response = fetch(url+'/delete?id='+id, {
+        let response = fetch(document.URL+'/delete?id='+id, {
             method: "Delete"
         });
         if(response.ok){
-            alert("Продукт удален создан.");
+            alert("Продукт удален успешно.");
         }
         else {
             alert("Ошибка "+ response.status)
@@ -93,26 +90,26 @@
 
     function createTable(response){
         const space = document.getElementById("table");
-        tbl = document.createElement('table');
+        let tbl = document.createElement('table');
         tbl.style.width = '100px';
         const tr = tbl.insertRow();
-        ["id", "Название товара", "Описание", "Количество", "Цена"].forEach(
+        ["id", "Название товара", "Описание", "Количество шт.", "Цена р."].forEach(
             text => {
                 const td = tr.insertCell();
                 td.appendChild(document.createTextNode(text));
                 td.style.border = '1px solid black';
             })
         let i = 0;
-        for(user of response){
+        for(const product of response){
             const tr = tbl.insertRow();
-            Object.keys(user).forEach(key => {
+            Object.keys(product).forEach(key => {
                 const td = tr.insertCell();
-                td.appendChild(document.createTextNode(user[key]));
+                td.appendChild(document.createTextNode(product[key]));
                 td.style.border = '1px solid black';
             })
             const td = tr.insertCell();
             let button =  document.createElement("button");
-            button.id=user.id;
+            button.id=product.id;
             button.textContent="Удалить";
             button.onclick= function () {
                 deleteProduct(this.id);
@@ -124,7 +121,7 @@
     }
 
     async function load(){
-        let response = await fetch(document.URL+"/all")
+        let response = await fetch(document.URL+"/user/all")
             .then(function(response) {
                 if (!response.ok) {
                     alert("Невозможно загрузить продукты. Ошибка "+ response.status)
@@ -137,7 +134,7 @@
     load();
 </script>
 <br>
-<a href="/">Назад</a>
+<a href="/page">Назад</a>
 </body>
 </html>
 

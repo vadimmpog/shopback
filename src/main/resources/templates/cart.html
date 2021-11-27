@@ -1,10 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Shop</title>
 </head>
 <body>
+<h1>Корзина</h1>
+<br>
+<div id="table"></div>
+<br>
+<br>
+<div id="form"></div>
+<script>
+    async function deleteProduct(id){
+        let response = await fetch('orders/user/delete?id='+id, {
+            method: "Delete"
+        });
+        if(response.ok){
+            alert("Продукт удален успешно.");
+        }
+        else {
+            alert("Ошибка "+ response.status)
+        }
+        location.reload();
+    }
 
+    async function formOrder(){
+        let response = await fetch("/orders/user/loadCart")
+            .then(function(response) {
+                if (!response.ok) {
+                    alert("Невозможно загрузить корзину. Ошибка "+ response.status)
+                }
+                return response.json()
+            });
+        let orderList = []
+        for(let p of response){
+            let item = {
+                "id":p.id,
+                "productId":p.productId,
+                "quantity":document.getElementById("input"+p.id).value
+            };
+            orderList.push(item);
+        }
+        let orderResponse = await fetch("/orders/user/formOrder", {
+            method: "Post",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(orderList)
+        }).then(function(response) {
+            if (!response.ok) {
+                alert("Ошибка при оформлении заказа. "+ response.status)
+            }
+            return response.json();
+        });
+        if (orderResponse === 0)
+            alert("Количество товаров изменилось либо заказ не корректен.");
+        else
+            alert("Заказ оформлен успешно.");
+        location.reload();
+    }
+
+    function createTable(response){
+        const space = document.getElementById("table");
+        if(response.length === 0){
+            space.appendChild(document.createTextNode("Корзина пуста."));
+        }
+        else {
+            let form = document.createElement("button");
+            form.textContent="Оформить заказ";
+            form.onclick=function f(){
+                formOrder();
+            };
+            document.getElementById("form").appendChild(form);
+            let tbl = document.createElement('table');
+            tbl.style.width = '100px';
+            const tr = tbl.insertRow();
+            ["Название товара", "Цена", "Количество"].forEach(
+                text => {
+                    const td = tr.insertCell();
+                    td.appendChild(document.createTextNode(text));
+                    td.style.border = '1px solid black';
+                })
+            let i = 0;
+            for(const product of response){
+                const tr = tbl.insertRow();
+                Object.keys(product).forEach(key => {
+                    if(key !== 'id' && key !== 'productId') {
+                        const td = tr.insertCell();
+                        if(key === 'quantity'){
+                            let input = document.createElement("input");
+                            input.value=product[key];
+                            input.type="number";
+                            input.id="input"+product.id;
+                            input.min="1";
+                            input.max=product["quantity"];
+                            input.onkeydown="return false";
+                            td.appendChild(input);
+                        } else {
+                            td.appendChild(document.createTextNode(product[key]));
+                        }
+                        td.style.border = '1px solid black';
+                    }
+                })
+                const td = tr.insertCell();
+                let button =  document.createElement("button");
+                button.id=product.id;
+                button.textContent="Удалить";
+                button.onclick= function () {
+                    deleteProduct(this.id);
+                };
+                td.appendChild(button);
+                i+=1;
+            }
+            space.appendChild(tbl);
+        }
+    }
+
+    async function load(){
+        let response = await fetch("/orders/user/loadCart")
+            .then(function(response) {
+                if (!response.ok) {
+                    alert("Невозможно загрузить корзину. Ошибка "+ response.status)
+                }
+                return response.json()
+            });
+        createTable(response);
+    }
+    load();
+</script>
+<br>
+<br>
+<a href="/page">Назад</a>
 </body>
 </html>

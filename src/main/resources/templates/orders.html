@@ -16,15 +16,13 @@
 <div id="table"></div>
 <script>
     function clear(){
-        document.getElementById("id").value = "";
-        document.getElementById("sum").value="";
-        document.getElementById("date").value="";
-        document.getElementById("time").value="";
-        document.getElementById("userId").value="";
+        ["id", "sum", "date", "time", "userId"].forEach(text => {
+            document.getElementById(text).value = "";
+        })
     }
 
     async function update(){
-        var form = {
+        let form = {
             'id': document.getElementById("id").value,
             'sum': document.getElementById("sum").value,
             'date': document.getElementById("date").value,
@@ -93,7 +91,7 @@
 
     function createTable(response){
         const space = document.getElementById("table");
-        tbl = document.createElement('table');
+        let tbl = document.createElement('table');
         tbl.style.width = '100px';
         const tr = tbl.insertRow();
         ["id", "Сумма заказа", "Дата", "Время", "id пользователя"].forEach(
@@ -103,16 +101,16 @@
                 td.style.border = '1px solid black';
             })
         let i = 0;
-        for(user of response){
+        for(const order of response){
             const tr = tbl.insertRow();
-            Object.keys(user).forEach(key => {
+            Object.keys(order).forEach(key => {
                 const td = tr.insertCell();
-                td.appendChild(document.createTextNode(user[key]));
+                td.appendChild(document.createTextNode(order[key]));
                 td.style.border = '1px solid black';
             })
             const td = tr.insertCell();
             let button =  document.createElement("button");
-            button.id=user.id;
+            button.id=order.id;
             button.textContent="Удалить";
             button.onclick= function () {
                 deleteOrder(this.id);
@@ -137,6 +135,6 @@
     load();
 </script>
 <br>
-<a href="/">Назад</a>
+<a href="/page">Назад</a>
 </body>
 </html>

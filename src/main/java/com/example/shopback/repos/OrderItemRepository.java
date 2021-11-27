@@ -18,4 +18,8 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Integer> {
     @Query("SELECT oi FROM OrderItem oi WHERE oi.orderId=:orderId")
     List<OrderItem> findByOrderId(@Param("orderId") Integer orderId);
 
+    @Query("SELECT oi FROM OrderItem oi WHERE oi.orderId=null AND oi.userId=:userId")
+    List<OrderItem> findAllByUserId(@Param("userId") Integer userId);
+
+
 }
