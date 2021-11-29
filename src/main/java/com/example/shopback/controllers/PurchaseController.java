@@ -61,6 +61,4 @@ public class PurchaseController {
     public Tuple<List<OrderItem>,Float> getOrderList(@RequestParam(value = "orderId") Integer order_id) {
         return purchaseService.getOrderList(order_id);
     }
-
-    // найти заказы пользователя по id
 }

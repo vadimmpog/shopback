@@ -41,5 +41,4 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("SELECT quantity FROM Product WHERE id=:id")
     Integer getQuantity(@Param("id") Integer id);
-
 }

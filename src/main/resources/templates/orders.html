@@ -49,32 +49,6 @@
         location.reload();
     }
 
-    // async function create(){
-    //     var form = {
-    //         'id': document.getElementById("id").value,
-    //         'sum': document.getElementById("sum").value,
-    //         'date': document.getElementById("date").value,
-    //         'time': document.getElementById("time").value,
-    //         'userId': document.getElementById("userId").value
-    //     };
-    //
-    //     let response = await fetch(document.URL+"/create", {
-    //         method: "Post",
-    //         headers: {
-    //             'Content-Type': 'application/json;charset=utf-8'
-    //         },
-    //         body: JSON.stringify(form)
-    //     });
-    //     if(response.ok){
-    //         alert("Заказ успешно создан.");
-    //     }
-    //     else {
-    //         alert("Ошибка "+response.status)
-    //     }
-    //     clear();
-    //     window.location.reload();
-    // }
-
     async function deleteOrder(id){
         let url=document.URL;
         let response = await fetch(url+'/delete?id='+id, {
