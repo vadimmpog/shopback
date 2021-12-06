@@ -29,6 +29,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/register").permitAll()
+                .antMatchers("/users/register").permitAll()
                 .antMatchers("/cart").hasAuthority("USER")
                 .antMatchers("/page").hasAnyAuthority("USER","ADMIN")
                 .antMatchers("/products/user/**").hasAnyAuthority("USER","ADMIN")
